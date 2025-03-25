@@ -1,0 +1,5 @@
+flask:8000
+video:8001
+audio:8002
+llm:8003
+report:8004
