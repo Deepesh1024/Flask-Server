@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form class="otp-Form" method="POST">
+                <span class="mainHeading">Enter OTP</span>
+                <p class="otpSubheading">We have sent a verification code to your email</p>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div class="inputContainer">
+                    <input required maxlength="1" type="text" class="otp-input" id="otp-input1" name="otp1">
+                    <input required maxlength="1" type="text" class="otp-input" id="otp-input2" name="otp2">
+                    <input required maxlength="1" type="text" class="otp-input" id="otp-input3" name="otp3">
+                    <input required maxlength="1" type="text" class="otp-input" id="otp-input4" name="otp4">
+                    <input required maxlength="1" type="text" class="otp-input" id="otp-input5" name="otp5">
+                    <input required maxlength="1" type="text" class="otp-input" id="otp-input6" name="otp6">
+                </div>
+                <button class="verifyButton" type="submit">Verify</button>
+                <button type="button" class="exitBtn" onclick="window.location.href='/'">×</button>
+                <p class="resendNote">Didn't receive the code? <button type="button" class="resendBtn" onclick="resendOTP()">Resend Code</button></p>
+            </form>
+            <style>
+                .otp-Form {
+                    width: 500px;
+                    height: 550px;
+                    background-color: rgb(255, 255, 255);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 40px 50px;
+                    gap: 30px;
+                    position: relative;
+                    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.15);
+                    border-radius: 25px;
+                    margin: 50px auto;
+                    transition: all 0.3s ease;
+                }
+
+                .mainHeading {
+                    font-size: 1.8em;
+                    color: rgb(15, 15, 15);
+                    font-weight: 700;
+                    margin-bottom: 10px;
+                }
+
+                .otpSubheading {
+                    font-size: 0.9em;
+                    color: black;
+                    line-height: 20px;
+                    text-align: center;
+                }
+
+                .inputContainer {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    gap: 10px;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .otp-input {
+                    background-color: rgb(228, 228, 228);
+                    width: 50px;
+                    height: 50px;
+                    text-align: center;
+                    border: none;
+                    border-radius: 7px;
+                    caret-color: rgb(127, 129, 255);
+                    color: rgb(44, 44, 44);
+                    outline: none;
+                    font-weight: 600;
+                }
+
+                .otp-input:focus,
+                .otp-input:valid {
+                    background-color: rgba(127, 129, 255, 0.199);
+                    transition-duration: .3s;
+                }
+
+                .verifyButton {
+                    width: 100%;
+                    height: 40px;
+                    border: none;
+                    background-color: rgb(127, 129, 255);
+                    color: white;
+                    font-weight: 600;
+                    cursor: pointer;
+                    border-radius: 10px;
+                    transition-duration: .2s;
+                }
+
+                .verifyButton:hover {
+                    background-color: rgb(144, 145, 255);
+                    transition-duration: .2s;
+                }
+
+                .exitBtn {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.171);
+                    background-color: rgb(255, 255, 255);
+                    border-radius: 50%;
+                    width: 25px;
+                    height: 25px;
+                    border: none;
+                    color: black;
+                    font-size: 1.1em;
+                    cursor: pointer;
+                }
+
+                .resendNote {
+                    font-size: 0.7em;
+                    color: black;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+                    margin: 0;
+                }
+
+                .resendBtn {
+                    background-color: transparent;
+                    border: none;
+                    color: rgb(127, 129, 255);
+                    cursor: pointer;
+                    font-size: 1.1em;
+                    font-weight: 700;
+                }
+            </style>
+            <script>
+                // Auto-focus next input
+                document.querySelectorAll('.otp-input').forEach((input, index) => {
+                    input.addEventListener('input', function() {
+                        if (this.value.length === 1) {
+                            const nextInput = document.getElementById(`otp-input${index + 2}`);
+                            if (nextInput) nextInput.focus();
+                        }
+                    });
+                    
+                    // Handle backspace
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Backspace' && !this.value) {
+                            const prevInput = document.getElementById(`otp-input${index}`);
+                            if (prevInput) prevInput.focus();
+                        }
+                    });
+                });
+
+                function resendOTP() {
+                    // Add your resend OTP logic here
+                    alert('OTP resend functionality will be implemented here');
+                }
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}

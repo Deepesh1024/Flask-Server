@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Analysis & Report Generator</title>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='static/style.css') }}">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
+  <style>
+    :root {
+      --primary-blue: #0090ab;
+      --secondary: #dd1a5b;
+      --accent: #4f2263;
+      --highlight: #ec7422;
+      --gradient-1: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent) 100%);
+      --gradient-2: linear-gradient(45deg, var(--secondary) 0%, var(--highlight) 100%);
+    }
+    
+    body {
+      background: #f8f9fa;
+      color: #4a4a4a;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+    }
+    
+    .navbar {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .cta-button {
+      background: var(--gradient-2);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(221, 26, 91, 0.2);
+      color: white;
+    }
+    .cta-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, transparent);
+      transition: 0.5s;
+    }
+
+    .cta-button:hover::after {
+      left: 100%;
+    }
+
+    #loading-overlay {
+      background: rgba(255, 255, 255, 0.98);
+      color: var(--primary);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: none;
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.98);
+    }
+  
+    .three-body {
+      --uib-size: 35px;
+      --uib-speed: 0.8s;
+      --uib-color: var(--primary-blue);
+      position: relative;
+      display: inline-block;
+      height: var(--uib-size);
+      width: var(--uib-size);
+      animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+      margin-bottom: 1.5rem;
+    }
+
+    .three-body__dot {
+      position: absolute;
+      height: 100%;
+      width: 30%;
+    }
+
+    .three-body__dot:after {
+      content: '';
+      position: absolute;
+      height: 0%;
+      width: 100%;
+      padding-bottom: 100%;
+      background-color: var(--uib-color);
+      border-radius: 50%;
+    }
+
+    .three-body__dot:nth-child(1) {
+      bottom: 5%;
+      left: 0;
+      transform: rotate(60deg);
+      transform-origin: 50% 85%;
+    }
+
+    .three-body__dot:nth-child(1)::after {
+      bottom: 0;
+      left: 0;
+      animation: wobble1 var(--uib-speed) infinite ease-in-out;
+      animation-delay: calc(var(--uib-speed) * -0.3);
+    }
+
+    .three-body__dot:nth-child(2) {
+      bottom: 5%;
+      right: 0;
+      transform: rotate(-60deg);
+      transform-origin: 50% 85%;
+    }
+
+    .three-body__dot:nth-child(2)::after {
+      bottom: 0;
+      left: 0;
+      animation: wobble1 var(--uib-speed) infinite
+        calc(var(--uib-speed) * -0.15) ease-in-out;
+    }
+
+    .three-body__dot:nth-child(3) {
+      bottom: -5%;
+      left: 0;
+      transform: translateX(116.666%);
+    }
+
+    .three-body__dot:nth-child(3)::after {
+      top: 0;
+      left: 0;
+      animation: wobble2 var(--uib-speed) infinite ease-in-out;
+    }
+
+    @keyframes spin78236 {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes wobble1 {
+      0%,
+      100% {
+        transform: translateY(0%) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translateY(-66%) scale(0.65);
+        opacity: 0.8;
+      }
+    }
+
+    @keyframes wobble2 {
+      0%,
+      100% {
+        transform: translateY(0%) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translateY(66%) scale(0.65);
+        opacity: 0.8;
+      }
+    }
+  
+    @keyframes spin {      to { transform: rotate(360deg); }
+    }
+  
+    #loading-messages p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+      color: var(--accent);
+      animation: fadeInUp 0.5s ease;
+    }
+  
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  
+  <!-- Block for additional head content -->
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+        <img src="https://www.some.education/assets/img/logo/logo.png" alt="Logo" height="50" class="me-2">
+        <span class="fw-bold" style="letter-spacing: 1px; color: var(--primary-blue);">School of Meaningful Experiences</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}" style="color: var(--primary-blue);"><i class="fas fa-home me-2"></i>Home</a>
+          </li>
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <span class="nav-link" style="color: var(--accent);"><i class="fas fa-user me-2"></i>Welcome, {{ current_user.username }}!</span>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('logout') }}" class="btn cta-button ms-3"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a href="{{ url_for('login') }}" class="btn cta-button ms-3"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('signup') }}" class="btn cta-button ms-3"><i class="fas fa-user-plus me-2"></i>Sign Up</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="three-body">
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+      <div class="three-body__dot"></div>
+    </div>
+    <h2 class="mb-3 text-gradient" style="background-image: var(--gradient-2);">Processing Your Request</h2>
+    <div id="loading-messages" class="mb-3"></div>
+  </div>
+
+  <!-- Main Content Block -->
+  <main class="my-3" style="margin-top: 80px !important; position: relative; z-index: 1030;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; min-width: 300px;">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <div class="container">
+      <p style="color: var(--primary-blue);">© {{ current_year if current_year else "2025" }} SOME ANALYTICS. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- JavaScript for Sequential Loading Messages -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          document.body.style.overflow = 'hidden';
+          
+          const overlay = document.getElementById('loading-overlay');
+          const messagesContainer = document.getElementById('loading-messages');
+          messagesContainer.innerHTML = "";
+          overlay.style.display = 'flex';
+          
+          const messages = [
+            "Loading, please wait...",
+            "Extracting insights",
+            "Analyzing video",
+            "Analyzing tone",
+            "Generating transcript",
+            "Evaluating resume"
+          ];
+          let delay = 0;
+          messages.forEach(function(message) {
+            setTimeout(function() {
+              const p = document.createElement('p');
+              p.textContent = message;
+              messagesContainer.appendChild(p);
+            }, delay);
+            delay += 1000;
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

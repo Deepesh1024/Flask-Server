@@ -1,0 +1,439 @@
+/* ============================================================
+   CSS Variables for Consistent Styling
+============================================================ */
+:root {
+  --primary-color: #6ab0ff;       /* Softer, modern blue */
+  --secondary-color: #50e3c2;     /* Refreshing teal for hover states */
+  --accent-color: #ff9a5a;        /* Warm orange for highlights */
+  --background-color: #0a0a0a;    /* Deeper black for background */
+  --text-color: #f0f0f0;          /* Softer white for text */
+  --card-bg: #1f1f1f;             /* Slightly lighter card background */
+  --btn-radius: 0.75rem;          /* Smoother button corners */
+  --transition-speed: 0.3s;
+  --font-family: 'Montserrat', sans-serif;
+  --shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
+  --navbar-bg: #141414;           /* Navbar background */
+}
+
+/* ============================================================
+ Global Resets and Base Styles
+============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0a0a, #141414);
+  font-family: var(--font-family);
+  color: var(--text-color);
+  line-height: 1.6;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Background Animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(106, 176, 255, 0.1) 0%, transparent 70%);
+  animation: pulse 15s infinite ease-in-out;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* ============================================================
+ Typography
+============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: 2rem;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* ============================================================
+ Links
+============================================================ */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+a:hover {
+  color: var(--secondary-color);
+  transform: translateY(-2px);
+  display: inline-block;
+}
+
+/* ============================================================
+ Buttons
+============================================================ */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  color: #fff;
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  transition: background var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(80, 227, 194, 0.5);
+}
+
+.btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Specific Button Styles */
+.btn-success {
+  background: linear-gradient(90deg, #34c759, #28a745);
+}
+
+.btn-success:hover {
+  background: linear-gradient(90deg, #28a745, #34c759);
+  box-shadow: 0 4px 15px rgba(52, 199, 89, 0.5);
+}
+
+.btn-login {
+  background: linear-gradient(90deg, #ff6f61, #ff9a5a);
+  margin-right: 0.5rem;
+}
+
+.btn-login:hover {
+  background: linear-gradient(90deg, #ff9a5a, #ff6f61);
+  box-shadow: 0 4px 15px rgba(255, 154, 90, 0.5);
+}
+
+.btn-signup {
+  background: linear-gradient(90deg, #6ab0ff, #50e3c2);
+}
+
+.btn-signup:hover {
+  background: linear-gradient(90deg, #50e3c2, #6ab0ff);
+  box-shadow: 0 4px 15px rgba(80, 227, 194, 0.5);
+}
+
+.btn-logout {
+  background: linear-gradient(90deg, #ff5555, #ff7878);
+}
+
+.btn-logout:hover {
+  background: linear-gradient(90deg, #ff7878, #ff5555);
+  box-shadow: 0 4px 15px rgba(255, 85, 85, 0.5);
+}
+
+/* ============================================================
+ Navbar Styling
+============================================================ */
+.navbar {
+  background-color: var(--navbar-bg);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  transition: color var(--transition-speed) ease;
+}
+
+.navbar-brand:hover {
+  color: var(--secondary-color);
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-text {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-right: 1rem;
+}
+
+/* ============================================================
+ Card Component
+============================================================ */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 600px;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* ============================================================
+ Form Styling
+============================================================ */
+form {
+  width: 100%;
+}
+
+.form-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.form-control {
+  background-color: #2a2a2a;
+  border: 1px solid var(--primary-color);
+  border-radius: 0.5rem;
+  color: var(--text-color);
+  padding: 0.75rem;
+  font-size: 1rem;
+  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.form-control:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 10px rgba(80, 227, 194, 0.3);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #888;
+}
+
+.form-text {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+}
+
+/* Toggle Switch Styling */
+.form-check-input {
+  background-color: #444;
+  border: 1px solid var(--primary-color);
+  transition: background-color var(--transition-speed) ease;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 10px rgba(80, 227, 194, 0.3);
+}
+
+.form-check-label {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.toggle-label {
+  font-weight: 500;
+  transition: color var(--transition-speed) ease;
+}
+
+.form-switch:hover .toggle-label {
+  color: var(--secondary-color);
+}
+
+/* Message Display */
+#message {
+  font-size: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: opacity var(--transition-speed) ease;
+}
+
+/* Alerts for Flash Messages */
+.alert {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+}
+
+.alert-success {
+  color: #34c759;
+  background-color: rgba(52, 199, 89, 0.1);
+  border: 1px solid #34c759;
+}
+
+.alert-danger {
+  color: #ff5555;
+  background-color: rgba(255, 85, 85, 0.1);
+  border: 1px solid #ff5555;
+}
+
+.text-success {
+  color: #34c759;
+  background-color: rgba(52, 199, 89, 0.1);
+}
+
+.text-danger {
+  color: #ff5555;
+  background-color: rgba(255, 85, 85, 0.1);
+}
+
+.text-muted {
+  color: #888;
+  background-color: rgba(136, 136, 136, 0.1);
+}
+
+/* ============================================================
+ Container
+============================================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+/* ============================================================
+ Utility Classes
+============================================================ */
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.d-none { display: none; }
+.d-flex { display: flex; }
+.align-items-center { align-items: center; }
+.justify-content-center { justify-content: center; }
+.text-center { text-align: center; }
+.w-100 { width: 100%; }
+
+/* ============================================================
+ Animations & Transitions
+============================================================ */
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+ Responsive Design
+============================================================ */
+@media (max-width: 768px) {
+  .navbar {
+      padding: 0.75rem 1rem;
+  }
+
+  .navbar-brand {
+      font-size: 1.25rem;
+  }
+
+  .navbar-links {
+      gap: 0.5rem;
+  }
+
+  .card {
+      padding: 1.5rem;
+      max-width: 90%;
+  }
+
+  h2 {
+      font-size: 1.5rem;
+  }
+
+  .btn {
+      padding: 0.65rem 1rem;
+      font-size: 0.9rem;
+  }
+
+  .form-control {
+      font-size: 0.9rem;
+      padding: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+      padding: 0.5rem;
+  }
+
+  .navbar {
+      padding: 0.5rem;
+  }
+
+  .navbar-links {
+      flex-direction: column;
+      gap: 0.25rem;
+  }
+
+  .navbar-text {
+      margin-right: 0;
+      margin-bottom: 0.5rem;
+  }
+
+  .card {
+      padding: 1rem;
+      max-width: 100%;
+  }
+
+  h2 {
+      font-size: 1.25rem;
+  }
+
+  .btn {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+  }
+}
