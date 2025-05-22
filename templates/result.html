@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #6b48ff, #00ddeb);
+            color: white;
+            border-radius: 8px;
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .video-container, .pdf-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        video, object {
+            width: 100%;
+            height: auto;
+        }
+        .pdf-container {
+            height: 500px;
+        }
+        .fallback {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6b48ff, #00ddeb);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            .pdf-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Analysis Completed!</h1>
+            <p>Thank you, <strong>{{ user_name }}</strong>! Your video has been analyzed.</p>
+        </div>
+        <div class="row">
+            <!-- Video Card -->
+            <div class="card">
+                <h3>Your Uploaded Video</h3>
+                <div class="video-container">
+                    <video controls>
+                        <source src="{{ url_for('uploaded_file', filename=video_filename) }}" type="video/mp4">
+                        <p class="fallback">
+                            Your browser does not support the video tag.
+                            <a href="{{ url_for('uploaded_file', filename=video_filename) }}" class="download-btn" download>Download video</a>
+                        </p>
+                    </video>
+                </div>
+            </div>
+            <!-- Report Card -->
+            <div class="card">
+                <h3>Analysis Report</h3>
+                <div class="pdf-container">
+                    <object data="{{ url_for('uploaded_file', filename=pdf_filename) }}" type="application/pdf">
+                        <p class="fallback">
+                            Unable to display PDF.
+                            <a href="{{ url_for('download_pdf') }}" class="download-btn" download>Download report</a>
+                        </p>
+                    </object>
+                </div>
+                <div style="text-align: center;">
+                    <a href="{{ url_for('download_pdf') }}" class="download-btn">Download Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

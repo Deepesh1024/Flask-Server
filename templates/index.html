@@ -2,7 +2,7 @@
 
 {% block extra_head %}
 <style>
--server#message {
+#message {
     position: fixed;
     top: 90px;
     left: 50%;
@@ -91,6 +91,7 @@
     to { opacity: 1; }
 }
 </style>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -110,234 +111,81 @@
 <!-- Main Content -->
 <div class="main-content" id="upload-section">
     <div class="card p-4 mx-auto fade-in" style="max-width: 640px; background: linear-gradient(145deg, #ffffff, #f3f4f6); border: none; border-radius: 1.25rem; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); transition: transform 0.3s;">
-    <h2 class="mb-4 text-center fw-bold" style="color: #1e40af; font-size: 2rem; letter-spacing: 0.75px; text-transform: uppercase;">Upload Your Video</h2>
-    <form method="POST" enctype="multipart/form-data" id="analysisForm">
-      <div class="mb-4">
-        <label for="user_name" class="form-label fw-medium" style="color: #1f2937; font-size: 1.1rem;">Enter your name:</label>
-        <input type="text" class="form-control" id="user_name" name="user_name" 
-               placeholder="Your name" required 
-               style="border: 1px solid #1e40af; border-radius: 0.75rem; padding: 0.875rem; background: #f9fafb; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s;">
-      </div>
+        <h2 class="mb-4 text-center fw-bold" style="color: #1e40af; font-size: 2rem; letter-spacing: 0.75px; text-transform: uppercase;">Upload Your Video</h2>
+        <form method="POST" enctype="multipart/form-data" id="analysisForm">
+            <div class="mb-4">
+                <label for="user_name" class="form-label fw-medium" style="color: #1f2937; font-size: 1.1rem;">Enter your name:</label>
+                <input type="text" class="form-control" id="user_name" name="user_name" 
+                       placeholder="Your name" required 
+                       style="border: 1px solid #1e40af; border-radius: 0.75rem; padding: 0.875rem; background: #f9fafb; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s;">
+            </div>
 
-      <!-- Source Toggle -->
-      <div class="mb-4 d-flex justify-content-center gap-5" style="background: #f1f5f9; padding: 1rem; border-radius: 0.75rem;">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input source-toggle" type="radio" name="source" id="youtubeSource" value="youtube" checked 
-                 style="accent-color: #1e40af; transform: scale(1.2);">
-          <label class="form-check-label" for="youtubeSource" style="color: #1f2937; font-size: 1rem; font-weight: 500;">
-            <i class="fas fa-video me-2"></i>YouTube/Google Drive
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input source-toggle" type="radio" name="source" id="fileSource" value="file" 
-                 style="accent-color: #1e40af; transform: scale(1.2);">
-          <label class="form-check-label" for="fileSource" style="color: #1f2937; font-size: 1rem; font-weight: 500;">
-            <i class="fas fa-upload me-2"></i>Upload File
-          </label>
-        </div>
-      </div>
+            <!-- Source Toggle -->
+            <div class="mb-4 d-flex justify-content-center gap-5" style="background: #f1f5f9; padding: 1rem; border-radius: 0.75rem;">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input source-toggle" type="radio" name="source" id="driveSource" value="drive" checked 
+                           style="accent-color: #1e40af; transform: scale(1.2);">
+                    <label class="form-check-label" for="driveSource" style="color: #1f2937; font-size: 1rem; font-weight: 500;">
+                        <i class="fas fa-video me-2"></i>Google Drive URL
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input source-toggle" type="radio" name="source" id="fileSource" value="file" 
+                           style="accent-color: #1e40af; transform: scale(1.2);">
+                    <label class="form-check-label" for="fileSource" style="color: #1f2937; font-size: 1rem; font-weight: 500;">
+                        <i class="fas fa-upload me-2"></i>Upload File
+                    </label>
+                </div>
+            </div>
 
-      <!-- YouTube/Google Drive URL Input -->
-      <div class="mb-4 youtube-source" id="youtubeSection">
-        <label for="youtube_url" class="form-label fw-medium" style="color: #1f2937; font-size: 1.1rem;">YouTube or Google Drive URL:</label>
-        <input type="text" class="form-control" id="youtube_url" name="youtube_url" placeholder="Enter YouTube or Google Drive URL" 
-               style="border: 1px solid #1e40af; border-radius: 0.75rem; padding: 0.875rem; background: #f9fafb; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s;">
-        <div class="form-text" style="font-size: 0.9rem; color: #6b7280;">
-          <i class="fas fa-info-circle me-1"></i>Supports YouTube and Google Drive video links.
-        </div>
-      </div>
+            <!-- Google Drive URL Input -->
+            <div class="mb-4 drive-source" id="driveSection">
+                <label for="drive_url" class="form-label fw-medium" style="color: #1f2937; font-size: 1.1rem;">Google Drive URL:</label>
+                <input type="text" class="form-control" id="drive_url" name="drive_url" placeholder="e.g., https://drive.google.com/file/d/FILE_ID/view" 
+                       style="border: 1px solid #1e40af; border-radius: 0.75rem; padding: 0.875rem; background: #f9fafb; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s;">
+                <div class="form-text" style="font-size: 0.9rem; color: #6b7280;">
+                    <i class="fas fa-info-circle me-1"></i>Enter a publicly accessible Google Drive video link (e.g., https://drive.google.com/file/d/FILE_ID/view).
+                </div>
+            </div>
 
-      <!-- File Upload Input -->
-      <div class="mb-4 file-source d-none" id="fileSection">
-        <label for="video_file" class="form-label fw-medium" style="color: #1f2937; font-size: 1.1rem;">Upload Video File:</label>
-        <input type="file" class="form-control" id="video_file" name="video_file" 
-               accept=".mp4, .mov, .avi, .mkv" 
-               style="border: 1px solid #1e40af; border-radius: 0.75rem; padding: 0.875rem; background: #f9fafb; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s;">
-        <div class="form-text" style="font-size: 0.9rem; color: #6b7280;">
-          <i class="fas fa-info-circle me-1"></i>Supported formats: MP4, MOV, AVI, MKV.
-        </div>
-      </div>
+            <!-- File Upload Input -->
+            <div class="mb-4 file-source d-none" id="fileSection">
+                <label for="video_file" class="form-label fw-medium" style="color: #1f2937; font-size: 1.1rem;">Upload Video File:</label>
+                <input type="file" class="form-control" id="video_file" name="video_file" 
+                       accept=".mp4, .mov, .avi, .mkv" 
+                       style="border: 1px solid #1e40af; border-radius: 0.75rem; padding: 0.875rem; background: #f9fafb; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s;">
+                <div class="form-text" style="font-size: 0.9rem; color: #6b7280;">
+                    <i class="fas fa-info-circle me-1"></i>Supported formats: MP4, MOV, AVI, MKV.
+                </div>
+            </div>
 
-      <!-- Toggle for Presentation Mode -->
-      <div class="mb-5 d-flex align-items-center justify-content-center">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" 
-                 id="presentationSwitch" name="presentation_mode"
-                 style="width: 4em; height: 2em; accent-color: #1e40af; cursor: pointer;">
-          <label class="form-check-label ms-3 fw-medium" for="presentationSwitch" 
-                 style="color: #1e40af; font-size: 1rem;">
-            <span class="toggle-label" id="presentationLabel">Resume Mode</span>
-          </label>
-        </div>
-      </div>
+            <!-- Toggle for Presentation Mode -->
+            <div class="mb-5 d-flex align-items-center justify-content-center">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" 
+                           id="presentationSwitch" name="presentation_mode"
+                           style="width: 4em; height: 2em; accent-color: #1e40af; cursor: pointer;">
+                    <label class="form-check-label ms-3 fw-medium" for="presentationSwitch" 
+                           style="color: #1e40af; font-size: 1rem;">
+                        <span class="toggle-label" id="presentationLabel">Resume Mode</span>
+                    </label>
+                </div>
+            </div>
 
-      <button type="submit" class="btn btn-primary w-100" id="submitBtn" 
-              style="background: linear-gradient(90deg, #1e40af, #3b82f6); border: none; border-radius: 0.75rem; padding: 0.875rem; font-size: 1.1rem; font-weight: 500; color: #ffffff; transition: background 0.3s, transform 0.2s;">
-        <i class="fas fa-play me-2"></i>Start Analysis
-      </button>
-    </form>
+            <button type="submit" class="btn btn-primary w-100" id="submitBtn" 
+                    style="background: linear-gradient(90deg, #1e40af, #3b82f6); border: none; border-radius: 0.75rem; padding: 0.875rem; font-size: 1.1rem; font-weight: 500; color: #ffffff; transition: background 0.3s, transform 0.2s;">
+                <i class="fas fa-play me-2"></i>Start Analysis
+            </button>
+        </form>
 
-    <!-- Message Display -->
-    <div id="message" class="d-none" style="font-size: 1rem; background: white;"></div>
+        <!-- Message Display -->
+        <div id="message" class="d-none" style="font-size: 1rem; background: white;"></div>
 
-    <!-- Download Link -->
-    <a id="downloadLink" href="#" class="btn btn-success w-100 mt-4 d-none" 
-       style="background: linear-gradient(90deg, #15803d, #22c55e); border: none; border-radius: 0.75rem; padding: 0.875rem; font-size: 1.1rem; font-weight: 500; color: #ffffff; transition: background 0.3s, transform 0.2s;">
-      <i class="fas fa-download me-2"></i>Download Report
-    </a>
-  </div>
+        <!-- Download Link -->
+        <a id="downloadLink" href="#" class="btn btn-success w-100 mt-4 d-none" 
+           style="background: linear-gradient(90deg, #15803d, #22c55e); border: none; border-radius: 0.75rem; padding: 0.875rem; font-size: 1.1rem; font-weight: 500; color: #ffffff; transition: background 0.3s, transform 0.2s;">
+            <i class="fas fa-download me-2"></i>Download Report
+        </a>
+    </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const youtubeSource = document.getElementById('youtubeSource');
-    const fileSource = document.getElementById('fileSource');
-    const youtubeSection = document.getElementById('youtubeSection');
-    const fileSection = document.getElementById('fileSection');
-    const youtubeInput = document.getElementById('youtube_url');
-    const fileInput = document.getElementById('video_file');
-    const presentationSwitch = document.getElementById('presentationSwitch');
-    const presentationLabel = document.getElementById('presentationLabel');
-    const form = document.getElementById('analysisForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const messageDiv = document.getElementById('message');
-    const downloadLink = document.getElementById('downloadLink');
-
-    // Function to toggle between YouTube/Drive URL and File Upload
-    function toggleSource() {
-      const isFileSource = fileSource.checked;
-      youtubeSection.classList.toggle('d-none', isFileSource);
-      fileSection.classList.toggle('d-none', !isFileSource);
-      youtubeInput.required = !isFileSource;
-      fileInput.required = isFileSource;
-    }
-
-    // Function to toggle Presentation Mode text
-    function togglePresentation() {
-      const isPresentationMode = presentationSwitch.checked;
-      presentationLabel.textContent = isPresentationMode ? 'Presentation Mode' : 'Resume Mode';
-    }
-
-    // Video URL validation for YouTube and Google Drive
-    function isValidVideoURL(url) {
-      const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=)?([a-zA-Z0-9_-]{11}).*$/;
-      const drivePattern = /^(https?:\/\/)?(drive\.google\.com\/file\/d\/[a-zA-Z0-9_-]+\/view).*$/;
-      return youtubePattern.test(url) || drivePattern.test(url);
-    }
-
-    // Validate YouTube or Google Drive URL on input change
-    youtubeInput.addEventListener("input", function () {
-      if (this.value && !isValidVideoURL(this.value)) {
-        this.setCustomValidity("Please enter a valid YouTube or Google Drive video link.");
-      } else {
-        this.setCustomValidity("");
-      }
-    });
-
-    // Form submission handling
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Validate inputs
-      if (!document.getElementById('user_name').value.trim()) {
-        showMessage('Please enter your name.', 'text-danger');
-        return;
-      }
-
-      if (youtubeSource.checked && !youtubeInput.value.trim()) {
-        showMessage('Please provide a YouTube or Google Drive URL.', 'text-danger');
-        return;
-      }
-
-      if (fileSource.checked && !fileInput.files.length) {
-        showMessage('Please upload a video file.', 'text-danger');
-        return;
-      }
-
-      const formData = new FormData(form);
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Analyzing...';
-      showMessage('Processing video, please wait...', 'text-muted');
-
-      try {
-        const response = await fetch('/', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          showMessage(result.message, 'text-success');
-          downloadLink.classList.remove('d-none');
-          downloadLink.href = '/download_pdf';
-        } else {
-          showMessage(result.message || 'An error occurred', 'text-danger');
-        }
-      } catch (error) {
-        showMessage('An error occurred: ' + error.message, 'text-danger');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Start Analysis';
-      }
-    });
-
-    // Function to show messages
-    function showMessage(text, className) {
-      messageDiv.textContent = text;
-      messageDiv.className = `mt-4 text-center ${className}`;
-      messageDiv.classList.remove('d-none');
-    }
-
-    // Event Listeners
-    youtubeSource.addEventListener('change', toggleSource);
-    fileSource.addEventListener('change', toggleSource);
-    presentationSwitch.addEventListener('change', togglePresentation);
-    toggleSource();
-    togglePresentation();
-
-    // Inline CSS for dynamic hover effects
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-      link.addEventListener('mouseenter', () => {
-        link.style.color = '#f472b6';
-        link.style.transform = 'scale(1.05)';
-      });
-      link.addEventListener('mouseleave', () => {
-        link.style.color = '#ffffff';
-        link.style.transform = 'scale(1)';
-      });
-    });
-
-    const card = document.querySelector('.card');
-    card.addEventListener('mouseenter', () => {
-      card.style.transform = 'translateY(-5px)';
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0)';
-    });
-
-    const inputs = document.querySelectorAll('.form-control');
-    inputs.forEach(input => {
-      input.addEventListener('focus', () => {
-        input.style.borderColor = '#3b82f6';
-        input.style.boxShadow = '0 0 0 0.25rem rgba(59, 130, 246, 0.25)';
-      });
-      input.addEventListener('blur', () => {
-        input.style.borderColor = '#1e40af';
-        input.style.boxShadow = 'none';
-      });
-    });
-
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        btn.style.transform = 'scale(1.03)';
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = 'scale(1)';
-      });
-    });
-  });
-</script>
 {% endblock %}
